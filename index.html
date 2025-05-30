@@ -119,6 +119,9 @@
                 alert(`PLAYER WITH ${board[a]} WINS!`);
                 return;
             }
+             if (board.every(cell => cell !== "")) {
+        alert("It's a TIE!");
+
         }
     }
 
