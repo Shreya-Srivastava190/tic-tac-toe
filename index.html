@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <style>
-        *{
+        * {
             padding: 0;
             margin: 0;
         }
-        body{
+        body {
             background-color: rgb(248, 242, 140);
             display: flex;
             flex-direction: column;
@@ -31,28 +31,23 @@
             height: 100px;
             max-height: 100px;
             max-width: 100px;
-            
         }
         td, th {
-             width:100px;
-            height:105px;
-            border:3px solid white;
+            width: 100px;
+            height: 105px;
+            border: 3px solid white;
             text-align: center;
-            font-size: 6vw;
-            color: white;
         }
-        .input{
-            text-align: center;
-            width:100px;
-            height:100px;
-            padding: 0;
+        .cell-button {
+            width: 100%;
+            height: 100%;
             background-color: black;
-            color:white;
-            font-size: 4vw;
-            font-weight: 200;
+            color: white;
+            font-size: 6vw;
             border: none;
+            cursor: pointer;
         }
-        .container{
+        .container {
             justify-content: center;
             align-items: center;
             align-self: center;
@@ -61,76 +56,67 @@
 </head>
 <body>
     <p class="heading">TIC TAC TOE!!</p>
-    <div class="heading">'*' or'#'</div>
+    <div class="heading">'*' or '#'</div>
     <div class="container">
         <table class="table">
-        <tr>
-            <td> <input type="text" maxlength="1" pattern="[#*]" class="input"></td>
-            <td><input type="text"  maxlength="1" pattern="[#*]" class="input"></td>
-            <td><input type="text"  maxlength="1" pattern="[#*]"  class="input"></td>
-        </tr>
-        <tr>
-            <td> <input type="text" maxlength="1" pattern="[#*]" class="input"></td>
-            <td><input type="text"  maxlength="1" pattern="[#*]" class="input"></td>
-            <td><input type="text"  maxlength="1" pattern="[#*]" class="input"></td>
-        </tr>
-        <tr>
-            <td> <input type="text" maxlength="1" pattern="[#*]"  class="input"></td>
-            <td><input type="text"  maxlength="1" pattern="[#*]"  class="input"></td>
-            <td><input type="text"  maxlength="1" pattern="[#*]"   class="input"></td>
-        </tr>
-    </table>
-
+            <tr>
+                <td><button class="cell-button"></button></td>
+                <td><button class="cell-button"></button></td>
+                <td><button class="cell-button"></button></td>
+            </tr>
+            <tr>
+                <td><button class="cell-button"></button></td>
+                <td><button class="cell-button"></button></td>
+                <td><button class="cell-button"></button></td>
+            </tr>
+            <tr>
+                <td><button class="cell-button"></button></td>
+                <td><button class="cell-button"></button></td>
+                <td><button class="cell-button"></button></td>
+            </tr>
+        </table>
     </div>
-    
+
     <script>
-    
-    let currentPlayer = "#"; 
-    
-    function togglePlayer() {
-        currentPlayer = currentPlayer === "#" ? "*" : "#"; 
-    }
+        let currentPlayer = "#";
 
-    document.querySelectorAll(".input").forEach(input => {
-        input.addEventListener("input", function() {
-            if (!this.value.match(/[#*]/)) {
-                this.value = ""; 
-            } else {
-                this.value = currentPlayer;
-                this.setAttribute("readonly", true); 
-                togglePlayer(); 
-            }
-        });
-    });
-
-    function checkWinner() {
-        let cells = document.querySelectorAll(".input");
-        let board = Array.from(cells).map(cell => cell.value);
-
-        let winningPatterns = [
-            [0,1,2], [3,4,5], [6,7,8], 
-            [0,3,6], [1,4,7], [2,5,8], 
-            [0,4,8], [2,4,6]          
-        ];
-
-        for (let pattern of winningPatterns) {
-            let [a, b, c] = pattern;
-            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-                alert(`PLAYER WITH ${board[a]} WINS!`);
-                return;
-            }
-            
+        function togglePlayer() {
+            currentPlayer = currentPlayer === "#" ? "*" : "#";
         }
-         if (board.every(cell => cell !== "")) {
-        alert("It's a TIE!");
-         }
-    }
 
-    document.querySelectorAll(".input").forEach(input => {
-        input.addEventListener("input", checkWinner);
-    });
-</script>
-       
-    
+        function checkWinner() {
+            let cells = document.querySelectorAll(".cell-button");
+            let board = Array.from(cells).map(cell => cell.textContent);
+
+            let winningPatterns = [
+                [0,1,2], [3,4,5], [6,7,8],
+                [0,3,6], [1,4,7], [2,5,8],
+                [0,4,8], [2,4,6]
+            ];
+
+            for (let pattern of winningPatterns) {
+                let [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    alert(`PLAYER WITH ${board[a]} WINS!`);
+                    return;
+                }
+            }
+
+            if (board.every(cell => cell !== "")) {
+                alert("It's a TIE!");
+            }
+        }
+
+        document.querySelectorAll(".cell-button").forEach(button => {
+            button.addEventListener("click", function () {
+                if (this.textContent === "") {
+                    this.textContent = currentPlayer;
+                    this.disabled = true;
+                    checkWinner();
+                    togglePlayer();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
